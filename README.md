@@ -1,3 +1,5 @@
+![image alt](https://github.com/Krystiian5/Videoclub_Mediterraneo/blob/main/Data/Logo.png?raw=true)
+
 # 🎬 Proyecto SQL: Análisis Lógico de Base de Datos de Videoclub_Mediterraneo
 
 ## 1. Descripción General y Objetivo del Proyecto 🧾
