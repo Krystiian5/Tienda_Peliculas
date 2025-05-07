@@ -1,4 +1,4 @@
-![image alt](https://github.com/Krystiian5/Videoclub_Mediterraneo/blob/main/Data/Logo.png?raw=true)
+![image alt](https://github.com/Krystiian5/Videoclub_Mediterraneo/blob/main/Data/Logo.jpeg?raw=true)
 
 # 🎬 Proyecto SQL: Análisis Lógico de Base de Datos de Videoclub_Mediterraneo
 
