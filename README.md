@@ -1,4 +1,4 @@
-# Tienda_Peliculas
+# Videoclub_Mediterraneo
 
 - Creamos nueva conexión con el nombre de Proyecto_SQL.
 - Creamos una nueva base de datos en la conexión creada llamada Tienda_Peliculas.
