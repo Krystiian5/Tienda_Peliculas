@@ -1,4 +1,32 @@
-# Videoclub_Mediterraneo
+# 🎬 Proyecto SQL: Análisis Lógico de Base de Datos de Videoclub_Mediterraneo
+
+## 1. Descripción General y Objetivo del Proyecto 🧾
+En este proyecto vamos a aplicar y demostrar competencias en SQL mediante el uso de PostgreSQL y la herramienta DBeaver y tiene como objetivo realizar un  análisis detallado de una base de datos relacional de nuestra empresa de alquiler de películas. Para ello se van a realizar múltiples consultas SQL para explorar las relaciones entre clientes, películas, actores, alquileres, tiendas y personal.
+
+## 2. Herramientas Utilizadas 🛠️
+
+- **PostgreSQL:** Sistema gestor de base de datos relacional.
+- **DBeaver:** Entorno gráfico para conexión, consulta y análisis de datos en bases de datos SQL.
+- **GitHub:** Para la entrega del proyecto.
+
+## 3. Estructura del Repositorio
+```bash
+--- Data
+	-- BBDD_Proyecto.sql #Base de Datos Originales
+	-- EnunciadoDataProject_SQL.Lógica.pdf #Enunciado Consultas
+	-- Logo.png
+--- Esquema_BBDD
+    -- 1. Diagrama.png #Esquema de Base de Datos
+    -- 2. Diagrama_Vista.png #Diagrama con Vista creada actor_num_peliculas
+--- README.md #Archivo Readme
+--- Consultas_Resueltas.sql #Archivo SQL con las consultas resueltas
+```
+
+## 4. Estructura del Proyecto 🧩
+
+### 1.  Preparación
+- Creación del Esquema de Base de Datos en el que vemos que se incluyen las tablas: "payment, rental, customer,  store, staff, address, city, country, inventory, actor, film_actor, film, film_category, category y language".
+- Revisión de claves primarias, foráneas y relaciones entre tablas para una mayor comprensión de los datos.
 
 - Creamos nueva conexión con el nombre de Proyecto_SQL.
 - Creamos una nueva base de datos en la conexión creada llamada Tienda_Peliculas.
