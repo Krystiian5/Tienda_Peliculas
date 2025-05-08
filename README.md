@@ -27,8 +27,8 @@ En este proyecto vamos a aplicar y demostrar competencias en SQL mediante el uso
 ## 4. Estructura del Proyecto 🧩
 
 ### 1. Preparación.
-- Creación de una nueva conexión con el nombre de Proyecto_SQL en DBeaver.
-- Creamos una nueva base de datos en la conexión creada llamada Tienda_Peliculas.
+- Configuración de una nueva conexión en DBeaver con el nombre de Proyecto_SQL.
+- Creación de una nueva base de datos en la conexión creada llamada Tienda_Peliculas.
 - Vinculamos la base de datos originales descargadas con la base de datos creada en Dbeaver llamada Tienda_Peliculas.
 - Creación del Esquema de Base de Datos en el que vemos que se incluyen las tablas: "payment, rental, customer,  store, staff, address, city, country, inventory, actor, film_actor, film, film_category, category y language".
 - Revisión de claves primarias, foráneas y relaciones entre tablas para una mayor comprensión de los datos.
@@ -61,13 +61,16 @@ En este proyecto vamos a aplicar y demostrar competencias en SQL mediante el uso
 ### 4. Subconsultas.
 
 - Se utilizan subbconsultas correlacionadas y no correlacionadas como por ejemplo para:
-    - Comparar duraciones con una película específica.
-    - Encontrar alquileres posteriores a un evento determinado.
-    - Contar películas alquiladas por cada cliente o por categoría.
+    - Comparar duraciones con una película específica como por ejemplo 'Dancing Fever'.
+    - Encontrar alquileres posteriores a un evento determinado. Como por ejemplo, alquileres posteriores al primer alquiler de 'Spartacus Cheaper'.
+    - Contar películas alquiladas por cada cliente o por categoría (Clientes que alquilaron más de 7 películas o películas que fueron alquiladas por más de 8 días).
     - Identificar películas aún no devueltas.
 
 ### 5. Vistas.
-- Se crea una vista que puede ser reutilizada **actor_num_peliculas** que muestra los actores junto al número de películas en las que han participado.
+- Se crea una vista **actor_num_peliculas** que permite:
+    - Consultar cuantas películas ha hecho cada actor. 
+    - Reutilizar esta lógica en múltiples consultas relacionadas con participación en categorías específicas.
+    - Filtrar actores por cantidad de películas.
 
 ### 6. Estructuras Temporales y CTEs.
 - Uso de Common Table Expressions (CTEs) mediante WITH para consultas temporales:
@@ -114,12 +117,13 @@ En este proyecto vamos a aplicar y demostrar competencias en SQL mediante el uso
 - Se listan películas que comparten categoría con 'Animation'.
 - Se identifican las categorías más alquiladas mediante subconsultas y agregaciones.
 
-## Recomendaciones Futuras 🚀 
+## 6. Recomendaciones Futuras 🚀 
 
 - Corregir los valores NULL en columnas como  original_language_id que dificultan el análisis.
 - Agregar nuevas columnas calculadas como:
     - Duración real del alquiler en días.
     - Clientes con deudas activas (películas no devueltas).
+    - Penalizaciones por retrasos.
 
 
 
