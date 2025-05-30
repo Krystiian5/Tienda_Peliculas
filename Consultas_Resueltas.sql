@@ -10,6 +10,8 @@ SELECT "title" AS "Nombre_Pelicula",
 FROM "film" f
 WHERE "rating" = 'R';
 
+/* Hay un total de 195 películas clasificadas por edades R.*/
+
 -- 3. Encuentra los nombres de los actores que tengan un “actor_id” entre 30 y 40.
 
 SELECT CONCAT("first_name",' ', "last_name" ) as "Nombre_Completo",
@@ -20,10 +22,12 @@ WHERE actor_id BETWEEN 30 AND 40
 
 -- 4. Obtén las películas cuyo idioma coincide con el idioma original.
 
-SELECT COUNT(film_id) AS "Numero_Peliculas"
-FROM film f 
-WHERE language_id  = original_language_id 
-;
+SELECT 	title AS "Titulo_Pelicula", 
+		language_id, 
+		original_language_id
+FROM film
+WHERE language_id = original_language_id
+   OR original_language_id IS NULL;
 
 
 -- 5. Ordena las películas por duración de forma ascendente.
@@ -37,18 +41,25 @@ ORDER BY f.length ;
 
 SELECT CONCAT ("first_name", ' ', "last_name") AS "Nombre_Completo"
 FROM actor a
-WHERE last_name ILIKE 'Allen'
+WHERE last_name ILIKE '%Allen%'
 ;
+
+/* Usamos el ILIKE con comodines para que encuentre en el apellido la palabra Allen sin tener encuenta las 
+ mayúsculas y vemos que hay un total de 3 personas con ese apellido.*/
+
 
 /* 7. Encuentra la cantidad total de películas en cada clasificación de la tabla “film” 
  	y muestra la clasificación junto con el recuento.
 */
 
-SELECT 	rating, 
+SELECT 	rating AS "Clasificacion", 
 		COUNT(film_id) AS "Total_Peliculas"
 FROM film f 
 GROUP BY rating 
 ORDER BY "Total_Peliculas" DESC ;
+
+/*La clasificación con mayor número de películas es la de PG-13 con un total de 223 y la menor 
+ sería G con un total de 178 películas.*/
 
 /* 8. Encuentra el título de todas las películas que son ‘PG-13’ o tienen una 
  	duración mayor a 3 horas en la tabla film.
@@ -82,10 +93,21 @@ ORDER BY r.rental_date DESC
 LIMIT 1
 OFFSET 2;
 
+-- Sugerencia para una alternativa más semántica 
+
+SELECT r.rental_id, r.rental_date, SUM(p.amount) AS total_pagado
+FROM rental r
+JOIN payment p ON r.rental_id = p.rental_id
+GROUP BY r.rental_id, r.rental_date
+ORDER BY r.rental_date DESC
+OFFSET 2 ROWS
+FETCH FIRST 1 ROW ONLY;
+
+
 /* 12. Encuentra el título de las películas en la tabla “film” que no sean ni ‘NC17’ 
 ni ‘G’ en cuanto a su clasificación. */
 
-SELECT 	title AS "Titulp_Pelicula", 
+SELECT 	title AS "Titulo_Pelicula", 
 		rating AS "Clasificacion"
 FROM  film f 
 WHERE rating <> 'NC-17' AND rating <> 'G'
@@ -184,6 +206,10 @@ FROM film f
 WHERE length > (SELECT Round(AVG(length),2)
 				FROM film f );
 
+/*Realizamos primero la subconsulta de cuánto es el promedio de duración de cada película y luego 
+ la añadimos a la consulta principal para seleccionar solo las películas que superen ese promedio 
+ de duración.*/
+
 -- 25. Averigua el número de alquileres registrados por mes.
 
 SELECT 	To_Char (rental_date, 'YYYY-MM') AS  "Mes",
@@ -209,7 +235,10 @@ FROM film f
 WHERE (rental_rate) > ( 
 						SELECT 	ROUND (AVG(rental_rate),2)
 						FROM film f2  	
-										);
+/*Creamos una subconsulta para calcular el precio promedio de alquiler (2,98) y la integramos 
+ a la consulta principal que nos devolverá los títulos de las películas por encima de ese precio.*/									);
+
+
 -- 28. Muestra el id de los actores que hayan participado en más de 40 películas.
 
 SELECT 	actor_id , 
@@ -257,9 +286,9 @@ actuado, incluso si algunos actores no han actuado en ninguna película.*/
 
 SELECT 	f.title AS "Titulo_Pelicula",
 		concat(a.first_name , ' ' , a.last_name ) AS "Actor_Nombre_Completo"
-FROM film f 
-RIGHT JOIN film_actor fa ON f.film_id = fa.film_id
-RIGHT JOIN actor a ON fa.actor_id =a.actor_id
+FROM actor a
+LEFT JOIN film_actor fa ON a.actor_id  = fa.actor_id 
+LEFT JOIN film f ON fa.film_id = f.film_id 
 ORDER BY f.title, "Actor_Nombre_Completo" 
 ;
 
@@ -396,6 +425,7 @@ LEFT JOIN film_actor fa ON a.actor_id = fa.actor_id
 WHERE fa.film_id IS NULL 
 ;
 
+/* No hay resultados. Por lo que todos los actores están asociados a al menos una película.*/
 
 -- 47 Selecciona el nombre de los actores y la cantidad de películas en las que han participado.
 
@@ -505,6 +535,7 @@ INNER JOIN category c ON fc.category_id = c.category_id
 WHERE c."name" ILIKE 'Sci-Fi' 
 ORDER BY "Apellido" ;
 
+
 /* 55. Encuentra el nombre y apellido de los actores que han actuado en
 películas que se alquilaron después de que la película ‘Spartacus
 Cheaper’ se alquilara por primera vez. Ordena los resultados
@@ -544,7 +575,7 @@ WHERE a.actor_id NOT IN (
 -- 57. Encuentra el título de todas las películas que fueron alquiladas por más de 8 días.
 
 SELECT 	f.title, r.rental_date, r.return_date,
-		Date_Part ('day', r.return_date - r.return_date) AS "Dias_Alquilado"
+		Date_Part ('day', r.return_date - r.rental_date) AS "Dias_Alquilado"
 FROM film f 
 INNER JOIN inventory i ON f.film_id =i.film_id
 INNER JOIN rental r ON i.inventory_id = r.inventory_id
@@ -583,13 +614,13 @@ películas distintas. Ordena los resultados alfabéticamente por apellido.*/
 
 SELECT 	c.first_name AS "Nombre",
 		c.last_name AS "Apellido",
-		count (DISTINCT f.film_id) AS "Peliculas_Alquiladas"
+		COUNT (DISTINCT f.film_id) AS "Peliculas_Alquiladas"
 FROM customer c 
 INNER JOIN rental r ON c.customer_id = r.customer_id 
 INNER JOIN inventory i ON r.inventory_id = i.inventory_id
 INNER JOIN film f ON i.film_id = f.film_id
 GROUP BY c.customer_id, c.first_name, c.last_name
-HAVING count (DISTINCT f.film_id) >= 7
+HAVING COUNT (DISTINCT f.film_id) >= 7
 ORDER BY c.last_name
 ;
 
@@ -622,7 +653,7 @@ ORDER BY "Numero_Peliculas" DESC
 -- 63. Obtén todas las combinaciones posibles de trabajadores con las tiendas que tenemos.
 
 SELECT 	s.staff_id AS "ID_Empleado",
-		concat(s.first_name, ' ', s.last_name) AS "Nombre_Empleado",
+		CONCAT (s.first_name, ' ', s.last_name) AS "Nombre_Empleado",
 		s2.store_id AS "ID_Tienda"
 FROM staff s 
 CROSS JOIN store s2 ;
